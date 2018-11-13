@@ -1,0 +1,4 @@
+*.h linguist-language=C++
+lib/* linguist-vendored
+src/lib/* linguist-vendored
+cmake/* linguist-vendored
