@@ -11,6 +11,7 @@ set(SOURCE_FILENAMES
         main.cpp
         window/Window.cpp
         lib/glad.c
+        lib/nuklear.cpp
         )
 
 include(prepend)
