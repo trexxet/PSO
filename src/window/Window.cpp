@@ -3,8 +3,14 @@
 #include <stdexcept>
 
 
-void error_callback (int error, const char* desc) {
+static void error_callback (int error, const char* desc) {
 	fprintf(stderr, "Error: %s\n", desc);
+}
+
+
+static void key_callback (GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
 
@@ -22,6 +28,7 @@ Window::Window () {
 	if (!window)
 		throw std::runtime_error ("Failed to create window");
 	glfwMakeContextCurrent (window);
+	glfwSetKeyCallback (window, key_callback);
 	glfwSwapInterval (1);
 
 	// Init GLAD
@@ -49,12 +56,14 @@ void Window::mainLoop () {
 	while (!glfwWindowShouldClose (window)) {
 		glfwPollEvents ();
 		nk_glfw3_new_frame ();
-
-		if (nk_begin (nk_ctx, "Main GUI", nk_rect (0, 0, 200, 600), NK_WINDOW_NO_SCROLLBAR)) { };
-		nk_end (nk_ctx);
-
+		update ();
 		render ();
 	}
+}
+
+
+void Window::update () {
+	proceedGUI ();
 }
 
 

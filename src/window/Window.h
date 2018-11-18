@@ -10,6 +10,8 @@ class Window {
 	GLFWwindow* window;
 	nk_context* nk_ctx;
 
+	void update ();
+	void proceedGUI ();
 	void render ();
 
 public:

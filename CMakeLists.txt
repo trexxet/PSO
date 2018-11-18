@@ -10,6 +10,7 @@ set(SOURCE_DIR src)
 set(SOURCE_FILENAMES
         main.cpp
         window/Window.cpp
+        window/WindowGUI.cpp
         lib/glad.c
         lib/nuklear.cpp
         )
