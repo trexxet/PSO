@@ -14,7 +14,7 @@ static void key_callback (GLFWwindow* window, int key, int scancode, int action,
 }
 
 
-Window::Window () {
+Window::Window () : cl_env() {
 	// Init GLFW
 	glfwSetErrorCallback (error_callback);
 	if (!glfwInit ())
@@ -43,7 +43,7 @@ Window::Window () {
 	// Get functions
 	Function::getList (&funcNameList);
 	for (size_t i = 0; i < Function::getListSize (); i++)
-		functions.push_back (Function::get (std::string(funcNameList[i])));
+		functions.push_back (Function::get (std::string(funcNameList[i]), cl_env));
 }
 
 

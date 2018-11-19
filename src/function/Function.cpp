@@ -5,20 +5,20 @@
 
 
 std::vector<Function::Description> Function::List = {
-		{"Waves", "-cos(x^2+y^2) / exp((x^2+y^2)/8)", "waves.cl"},
-		{"Hills", "-cos(x)cos(y) / exp((x^2+y^2)/32)", "hills.cl"}
+		{"Waves", "-cos(x^2+y^2) / exp((x^2+y^2)/8)", "../cl/waves.cl"},
+		{"Hills", "-cos(x)cos(y) / exp((x^2+y^2)/32)", "../cl/hills.cl"}
 };
 
 
-Function::Function (const std::string& string_representation, const std::string& cl_file)
-	: str_repr (string_representation), cl_file (cl_file)
+Function::Function (std::string string_representation, const CLEnviroment& cl_env, const std::string& cl_file)
+	: str_repr (std::move (string_representation)), prog (cl_env, cl_file)
 {}
 
 
-Function Function::get (const std::string& name) {
+Function Function::get (const std::string& name, const CLEnviroment& cl_env) {
 	for (auto& func : List)
 		if (func[0] == name)
-			return Function (func[1], func[2]);
+			return Function (func[1], cl_env, func[2]);
 	throw std::invalid_argument ("No such function: " + name);
 }
 

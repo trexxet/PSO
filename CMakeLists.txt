@@ -12,6 +12,8 @@ set(SOURCE_FILENAMES
         function/Function.cpp
         window/Window.cpp
         window/WindowGUI.cpp
+        auxiliary/aux.cpp
+        opencl/CLEnviroment.cpp
         lib/glad.c
         lib/nuklear.cpp
         )
@@ -25,16 +27,19 @@ set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
+find_package(OpenCL REQUIRED)
 
 target_include_directories(PSO PUBLIC
         lib/
         ${GLFW_INCLUDE_DIRS}
         ${OPENGL_INCLUDE_DIR}
+        ${OpenCL_INCLUDE_DIRS}
         )
 
 target_link_libraries(PSO
         ${GLFW_LIBRARIES}
         ${OPENGL_LIBRARIES}
+        ${OpenCL_LIBRARIES}
         )
 
 if (NOT WIN32)
