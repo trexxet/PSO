@@ -6,7 +6,7 @@
 
 std::vector<Function::Description> Function::List = {
 		// name      domain_x/2  domain_y/2  string_representation                 cl_file_path
-		{  "Waves",  6.0f,       6.0f,       "-cos(x^2+y^2) / exp((x^2+y^2)/8)",   "../cl/waves.cl" },
+		{  "Waves",  3.0f,       3.0f,       "-cos(x^2+y^2) / exp((x^2+y^2)/8)",   "../cl/waves.cl" },
 		{  "Hills",  6.0f,       6.0f,       "-cos(x)cos(y) / exp((x^2+y^2)/32)",  "../cl/hills.cl" }
 };
 

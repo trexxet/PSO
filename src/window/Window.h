@@ -5,6 +5,7 @@
 #include "nuklear/nuklear_common.h"
 
 #include "../opencl/CLEnviroment.h"
+#include "../canvas/Canvas.h"
 #include "../function/Function.h"
 
 #include <vector>
@@ -23,6 +24,7 @@ class Window {
 	size_t selectedFunction = 0;
 
 	CLEnviroment cl_env;
+	Canvas* canvas = nullptr;
 
 	void update ();
 	void proceedGUI ();

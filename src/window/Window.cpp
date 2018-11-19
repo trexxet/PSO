@@ -34,6 +34,9 @@ Window::Window () : cl_env() {
 	// Init GLAD
 	gladLoadGLLoader ((GLADloadproc) glfwGetProcAddress);
 
+	// Create canvas
+	canvas = new Canvas();
+
 	// Init Nuklear
 	nk_ctx = nk_glfw3_init (window, NK_GLFW3_INSTALL_CALLBACKS);
 	nk_font_atlas* font_atlas;
@@ -49,6 +52,7 @@ Window::Window () : cl_env() {
 
 
 Window::~Window () {
+	delete canvas;
 	if (window)
 		glfwDestroyWindow (window);
 	if (nk_ctx)
@@ -75,10 +79,12 @@ void Window::update () {
 
 
 void Window::render () {
+	glClearColor (1, 1, 1, 1);
 	glClear (GL_COLOR_BUFFER_BIT);
 	int width = 0, height = 0;
 	glfwGetWindowSize (window, &width, &height);
 	glViewport (0, 0, width, height);
+	canvas->render ();
 	nk_glfw3_render (NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 	glfwSwapBuffers (window);
 }

@@ -9,10 +9,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_DIR src)
 set(SOURCE_FILENAMES
         main.cpp
+        canvas/Canvas.cpp
         function/Function.cpp
         window/Window.cpp
         window/WindowGUI.cpp
         auxiliary/aux.cpp
+        gl/Shader.cpp
         opencl/CLEnviroment.cpp
         lib/glad.c
         lib/nuklear.cpp

@@ -11,7 +11,7 @@ void Window::proceedGUI () {
 		nk_layout_row_dynamic (nk_ctx, 30, 1);
 		nk_label_wrap (nk_ctx, functions[selectedFunction].str_repr.c_str ());
 		if (nk_button_label (nk_ctx, "Calculate function")) {
-			functions.at (selectedFunction).calculate_coordinates (cl_env, CANVAS_WIDTH, CANVAS_HEIGHT);
+			functions.at (selectedFunction).calculate_coordinates (cl_env, canvas->width, canvas->height);
 		}
 	};
 	nk_end (nk_ctx);
