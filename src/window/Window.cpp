@@ -4,7 +4,7 @@
 
 
 static void error_callback (int error, const char* desc) {
-	fprintf(stderr, "Error: %s\n", desc);
+	fprintf (stderr, "Error: %s\n", desc);
 }
 
 
@@ -40,6 +40,10 @@ Window::Window () {
 	nk_glfw3_font_stash_begin (&font_atlas);
 	nk_glfw3_font_stash_end ();
 
+	// Get functions
+	Function::getList (&funcNameList);
+	for (size_t i = 0; i < Function::getListSize (); i++)
+		functions.push_back (Function::get (std::string(funcNameList[i])));
 }
 
 
@@ -49,6 +53,7 @@ Window::~Window () {
 	if (nk_ctx)
 		nk_glfw3_shutdown ();
 	glfwTerminate ();
+	Function::freeList (&funcNameList);
 }
 
 

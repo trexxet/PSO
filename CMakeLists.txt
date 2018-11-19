@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_DIR src)
 set(SOURCE_FILENAMES
         main.cpp
+        function/Function.cpp
         window/Window.cpp
         window/WindowGUI.cpp
         lib/glad.c
