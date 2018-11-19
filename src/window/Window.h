@@ -10,6 +10,9 @@
 #include <vector>
 
 
+#define CANVAS_WIDTH 600
+#define CANVAS_HEIGHT 600
+
 class Window {
 
 	GLFWwindow* window;
@@ -17,7 +20,7 @@ class Window {
 
 	std::vector<Function> functions;
 	Function::NameList funcNameList = nullptr;
-	int selectedFunction = 0;
+	size_t selectedFunction = 0;
 
 	CLEnviroment cl_env;
 

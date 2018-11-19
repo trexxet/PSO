@@ -41,6 +41,7 @@ Window::Window () : cl_env() {
 	nk_glfw3_font_stash_end ();
 
 	// Get functions
+	Function::setCoordinatesKernel (cl_env, COORD_PROGRAM_PATH);
 	Function::getList (&funcNameList);
 	for (size_t i = 0; i < Function::getListSize (); i++)
 		functions.push_back (Function::get (std::string(funcNameList[i]), cl_env));
@@ -54,6 +55,7 @@ Window::~Window () {
 		nk_glfw3_shutdown ();
 	glfwTerminate ();
 	Function::freeList (&funcNameList);
+	Function::deleteCoordinatesKernel ();
 }
 
 

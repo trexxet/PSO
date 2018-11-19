@@ -6,11 +6,13 @@ void Window::proceedGUI () {
 		// Function selector
 		nk_layout_row_dynamic (nk_ctx, 30, 2);
 		nk_label (nk_ctx, "Function:", NK_TEXT_LEFT);
-		selectedFunction = nk_combo (nk_ctx, (const char**) funcNameList, (int) Function::getListSize (),
-		                             selectedFunction, 30, nk_vec2 (100, 80));
+		selectedFunction = (size_t) nk_combo (nk_ctx, (const char**) funcNameList, (int) Function::getListSize (),
+		                                      (int) selectedFunction, 30, nk_vec2 (100, 80));
 		nk_layout_row_dynamic (nk_ctx, 30, 1);
 		nk_label_wrap (nk_ctx, functions[selectedFunction].str_repr.c_str ());
-		if (nk_button_label (nk_ctx, "Calculate function")) {}
+		if (nk_button_label (nk_ctx, "Calculate function")) {
+			functions.at (selectedFunction).calculate_coordinates (cl_env, CANVAS_WIDTH, CANVAS_HEIGHT);
+		}
 	};
 	nk_end (nk_ctx);
 }
