@@ -24,7 +24,7 @@ Window::Window () : cl_env() {
 	glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create window
-	window = glfwCreateWindow (800, 600, "PSO", nullptr, nullptr);
+	window = glfwCreateWindow ((int) width, (int) height, "PSO", nullptr, nullptr);
 	if (!window)
 		throw std::runtime_error ("Failed to create window");
 	glfwMakeContextCurrent (window);
@@ -81,10 +81,13 @@ void Window::update () {
 void Window::render () {
 	glClearColor (1, 1, 1, 1);
 	glClear (GL_COLOR_BUFFER_BIT);
-	int width = 0, height = 0;
-	glfwGetWindowSize (window, &width, &height);
-	glViewport (0, 0, width, height);
-	canvas->render ();
 	nk_glfw3_render (NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+	canvas->render (width, height);
 	glfwSwapBuffers (window);
+}
+
+
+void Window::changeFunction () {
+	currFunction ().calculate_coordinates (cl_env, canvas->width, canvas->height);
+	canvas->loadBuffes (currFunction ().domain_w, currFunction ().domain_h);
 }

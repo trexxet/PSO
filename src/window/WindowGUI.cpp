@@ -10,9 +10,9 @@ void Window::proceedGUI () {
 		                                      (int) selectedFunction, 30, nk_vec2 (100, 80));
 		nk_layout_row_dynamic (nk_ctx, 30, 1);
 		nk_label_wrap (nk_ctx, functions[selectedFunction].str_repr.c_str ());
-		if (nk_button_label (nk_ctx, "Calculate function")) {
-			functions.at (selectedFunction).calculate_coordinates (cl_env, canvas->width, canvas->height);
-		}
+		if (nk_button_label (nk_ctx, "Calculate function"))
+			changeFunction ();
+
 	};
 	nk_end (nk_ctx);
 }

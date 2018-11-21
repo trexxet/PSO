@@ -19,11 +19,11 @@ class Function {
 	CLProgram program;
 	static cl::Kernel *coord_kernel;
 
-	float domain_w = 0, domain_h = 0;
 	float *coord_x = nullptr, *coord_y = nullptr;
 
 public:
 	std::string str_repr;
+	float domain_w = 0, domain_h = 0;
 
 	void calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, size_t pix_h);
 	void calculate_values (float* val_x, float* val_y);
