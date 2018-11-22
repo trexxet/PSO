@@ -81,6 +81,19 @@ void Function::calculate_values (const CLEnviroment& cl_env, const float max_val
 	cl_env.queue ().enqueueNDRangeKernel (kernel, cl::NullRange, cl::NDRange (size_x, size_y));
 	cl_env.queue ().enqueueReadBuffer (values_buf, CL_TRUE, 0, val_buf_size, (void*) values);
 	cl_env.queue ().enqueueReadBuffer (rgb_buf, CL_TRUE, 0, rgb_buf_size, (void*) rgb);
+
+	generateTexture ();
+}
+
+
+void Function::generateTexture () {
+	if (texID != 0)
+		glDeleteTextures (1, &texID);
+	glGenTextures (1, &texID);
+	glBindTexture (GL_TEXTURE_2D, texID);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB32F, (GLsizei) size_x, (GLsizei) size_y, 0, GL_RGB, GL_FLOAT, rgb);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 
@@ -108,4 +121,6 @@ Function::~Function () {
 	free (coord_y);
 	free (values);
 	free (rgb);
+	if (texID != 0)
+		glDeleteTextures (1, &texID);
 }

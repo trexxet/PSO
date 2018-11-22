@@ -82,7 +82,7 @@ void Window::render () {
 	glClearColor (1, 1, 1, 1);
 	glClear (GL_COLOR_BUFFER_BIT);
 	nk_glfw3_render (NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
-	canvas->render (width, height);
+	canvas->render (width, height, currFunction ().texture ());
 	glfwSwapBuffers (window);
 }
 

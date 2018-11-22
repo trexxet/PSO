@@ -17,10 +17,10 @@ void Window::proceedGUI () {
 			changeFunction ();
 
 		char *maxval_str = nullptr;
-		asprintf (&maxval_str, "Visualized maximum: %.1f", canvas->max_val);
+		asprintf (&maxval_str, "Visualized maximum: %.2f", canvas->max_val);
 		nk_label (nk_ctx, maxval_str, NK_TEXT_LEFT);
 		free (maxval_str);
-		nk_slider_float (nk_ctx, 0.1f, &(canvas->max_val), 10.f, 0.1f);
+		nk_slider_float (nk_ctx, 0.1f, &(canvas->max_val), 2.f, 0.01f);
 	};
 	nk_end (nk_ctx);
 }

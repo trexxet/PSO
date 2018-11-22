@@ -18,7 +18,7 @@ class Canvas {
 	void loadPlotBuffers ();
 	void loadAxesBuffers (const float dom_x, const float dom_y);
 
-	void renderPlot ();
+	void renderPlot (GLuint plot_texture);
 	void renderAxes ();
 
 public:
@@ -28,7 +28,7 @@ public:
 	float max_val = 1.f;
 
 	void loadBuffes (const float dom_x, const float dom_y);
-	void render (size_t scr_w, size_t scr_h);
+	void render (size_t scr_w, size_t scr_h, GLuint plot_texture);
 
 	Canvas() : shaderProg ("Canvas", Shader::fromFile, "../shaders/shader.vert",
 	                       Shader::fromFile, "../shaders/shader.frag") {
