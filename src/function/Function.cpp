@@ -30,12 +30,16 @@ Function Function::get (const std::string& name, const CLEnviroment& cl_env) {
 
 
 void Function::calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, size_t pix_h) {
+	free (coord_x);
+	free (coord_y);
+	size_x = pix_w;
+	size_y = pix_h;
 	coord_x = (float*) calloc (pix_w, sizeof(float));
 	coord_y = (float*) calloc (pix_h, sizeof(float));
 	float step_x = domain_w / (float) pix_w;
 	float step_y = domain_h / (float) pix_h;
-	size_t x_buf_size = sizeof(float) * pix_w;
-	size_t y_buf_size = sizeof(float) * pix_h;
+	x_buf_size = sizeof(float) * pix_w;
+	y_buf_size = sizeof(float) * pix_h;
 
 	cl::Buffer coord_x_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, x_buf_size);
 	cl::Buffer coord_y_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, y_buf_size);
@@ -51,8 +55,32 @@ void Function::calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, 
 }
 
 
-void Function::calculate_values (float *val_x, float *val_y) {
+void Function::calculate_values (const CLEnviroment& cl_env, const float max_val) {
+	free (values);
+	free (rgb);
+	size_t val_buf_size = sizeof(float) * size_x * size_y;
+	size_t rgb_buf_size = val_buf_size * 3;
+	values = (float*) calloc (val_buf_size, 1);
+	rgb = (float*) calloc (rgb_buf_size, 1);
 
+	cl::Kernel kernel (program.program (), "calculate");
+	cl::Buffer coord_x_buf (cl_env.ctx (), CL_MEM_READ_ONLY, x_buf_size);
+	cl::Buffer coord_y_buf (cl_env.ctx (), CL_MEM_READ_ONLY, y_buf_size);
+	cl::Buffer values_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, val_buf_size);
+	cl::Buffer rgb_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, rgb_buf_size);
+
+	cl_env.queue ().enqueueWriteBuffer (coord_x_buf, CL_TRUE, 0, x_buf_size, (void*) coord_x);
+	cl_env.queue ().enqueueWriteBuffer (coord_y_buf, CL_TRUE, 0, y_buf_size, (void*) coord_y);
+
+	kernel.setArg (0, coord_x_buf);
+	kernel.setArg (1, coord_y_buf);
+	kernel.setArg (2, values_buf);
+	kernel.setArg (3, max_val);
+	kernel.setArg (4, rgb_buf);
+
+	cl_env.queue ().enqueueNDRangeKernel (kernel, cl::NullRange, cl::NDRange (size_x, size_y));
+	cl_env.queue ().enqueueReadBuffer (values_buf, CL_TRUE, 0, val_buf_size, (void*) values);
+	cl_env.queue ().enqueueReadBuffer (rgb_buf, CL_TRUE, 0, rgb_buf_size, (void*) rgb);
 }
 
 
@@ -78,4 +106,6 @@ void Function::freeList (NameList* buffer) {
 Function::~Function () {
 	free (coord_x);
 	free (coord_y);
+	free (values);
+	free (rgb);
 }

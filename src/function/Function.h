@@ -20,13 +20,15 @@ class Function {
 	static cl::Kernel *coord_kernel;
 
 	float *coord_x = nullptr, *coord_y = nullptr;
+	size_t size_x = 0, size_y = 0, x_buf_size = 0, y_buf_size = 0;
+	float *values = nullptr, *rgb = nullptr;
 
 public:
 	std::string str_repr;
 	float domain_w = 0, domain_h = 0;
 
 	void calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, size_t pix_h);
-	void calculate_values (float* val_x, float* val_y);
+	void calculate_values (const CLEnviroment& cl_env, const float max_val);
 
 	using NameList = char**;
 	static Function get (const std::string &name, const CLEnviroment& cl_env);

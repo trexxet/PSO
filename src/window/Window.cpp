@@ -90,4 +90,5 @@ void Window::render () {
 void Window::changeFunction () {
 	currFunction ().calculate_coordinates (cl_env, canvas->width, canvas->height);
 	canvas->loadBuffes (currFunction ().domain_w, currFunction ().domain_h);
+	currFunction ().calculate_values (cl_env, canvas->max_val);
 }

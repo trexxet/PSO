@@ -25,6 +25,8 @@ public:
 	const size_t width = 600;
 	const size_t height = 600;
 
+	float max_val = 1.f;
+
 	void loadBuffes (const float dom_x, const float dom_y);
 	void render (size_t scr_w, size_t scr_h);
 
