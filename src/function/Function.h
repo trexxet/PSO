@@ -23,7 +23,7 @@ class Function {
 
 	float *coord_x = nullptr, *coord_y = nullptr;
 	size_t size_x = 0, size_y = 0, x_buf_size = 0, y_buf_size = 0;
-	float *values = nullptr, *rgb = nullptr;
+	float *values = nullptr;
 
 	GLuint texID = 0;
 	void generateTexture ();
@@ -33,7 +33,7 @@ public:
 	float domain_w = 0, domain_h = 0;
 
 	void calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, size_t pix_h);
-	void calculate_values (const CLEnviroment& cl_env, const float max_val);
+	void calculate_values (const CLEnviroment& cl_env);
 	GLuint texture () { return texID; }
 
 	using NameList = char**;

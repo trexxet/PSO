@@ -91,6 +91,7 @@ void Canvas::renderPlot (GLuint plot_texture) {
 	if (plotBuffers.VAO != 0) {
 		glBindVertexArray (plotBuffers.VAO);
 		glDrawArrays (GL_TRIANGLES, 0, plotBuffers.size / 2);
+		shaderProg.setUniform ("renderMaximum", max_val);
 	}
 }
 

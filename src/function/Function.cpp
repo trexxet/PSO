@@ -55,19 +55,16 @@ void Function::calculate_coordinates (const CLEnviroment& cl_env, size_t pix_w, 
 }
 
 
-void Function::calculate_values (const CLEnviroment& cl_env, const float max_val) {
+void Function::calculate_values (const CLEnviroment& cl_env) {
 	free (values);
-	free (rgb);
 	size_t val_buf_size = sizeof(float) * size_x * size_y;
 	size_t rgb_buf_size = val_buf_size * 3;
 	values = (float*) calloc (val_buf_size, 1);
-	rgb = (float*) calloc (rgb_buf_size, 1);
 
 	cl::Kernel kernel (program.program (), "calculate");
 	cl::Buffer coord_x_buf (cl_env.ctx (), CL_MEM_READ_ONLY, x_buf_size);
 	cl::Buffer coord_y_buf (cl_env.ctx (), CL_MEM_READ_ONLY, y_buf_size);
 	cl::Buffer values_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, val_buf_size);
-	cl::Buffer rgb_buf (cl_env.ctx (), CL_MEM_WRITE_ONLY, rgb_buf_size);
 
 	cl_env.queue ().enqueueWriteBuffer (coord_x_buf, CL_TRUE, 0, x_buf_size, (void*) coord_x);
 	cl_env.queue ().enqueueWriteBuffer (coord_y_buf, CL_TRUE, 0, y_buf_size, (void*) coord_y);
@@ -75,12 +72,9 @@ void Function::calculate_values (const CLEnviroment& cl_env, const float max_val
 	kernel.setArg (0, coord_x_buf);
 	kernel.setArg (1, coord_y_buf);
 	kernel.setArg (2, values_buf);
-	kernel.setArg (3, max_val);
-	kernel.setArg (4, rgb_buf);
 
 	cl_env.queue ().enqueueNDRangeKernel (kernel, cl::NullRange, cl::NDRange (size_x, size_y));
 	cl_env.queue ().enqueueReadBuffer (values_buf, CL_TRUE, 0, val_buf_size, (void*) values);
-	cl_env.queue ().enqueueReadBuffer (rgb_buf, CL_TRUE, 0, rgb_buf_size, (void*) rgb);
 
 	generateTexture ();
 }
@@ -91,7 +85,7 @@ void Function::generateTexture () {
 		glDeleteTextures (1, &texID);
 	glGenTextures (1, &texID);
 	glBindTexture (GL_TEXTURE_2D, texID);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGB32F, (GLsizei) size_x, (GLsizei) size_y, 0, GL_RGB, GL_FLOAT, rgb);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_R32F, (GLsizei) size_x, (GLsizei) size_y, 0, GL_RED, GL_FLOAT, values);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
@@ -120,7 +114,6 @@ Function::~Function () {
 	free (coord_x);
 	free (coord_y);
 	free (values);
-	free (rgb);
 	if (texID != 0)
 		glDeleteTextures (1, &texID);
 }
